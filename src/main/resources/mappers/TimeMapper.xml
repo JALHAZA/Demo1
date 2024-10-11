@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lyj.springdemo.mapper.TimeMapper">
+    <select id="getTime" resultType="String">
+        select now()
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from test_tb1
+    </select>
+</mapper>

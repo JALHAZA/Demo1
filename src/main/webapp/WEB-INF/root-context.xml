@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <!--    자동생성  com.lyj.springdemo.sample 아래 component-scan 하여 bean 자동 생성-->
+    <context:component-scan base-package="com.lyj.springdemo.sample"/>
+
+<!--    <bean class="com.lyj.springdemo.sample.SampleDAO"/>-->
+
+<!--    <bean class="com.lyj.springdemo.sample.SampleService"/>-->
+
+
+
+    <bean id="hikariConfigMaria" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mariadb://localhost:3307/webdb"></property>
+        <property name="username" value="lyj"></property>
+        <property name="password" value="1234"></property>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="datasourceMaria" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfigMaria"/>
+    </bean>
+
+
+
+    <bean id="hikariConfigMySQL" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/springdb"></property>
+        <property name="username" value="lyj"></property>
+        <property name="password" value="1234"></property>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="datasourceMySQL" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfigMySQL"/>
+    </bean>
+
+
+
+    <bean id="hikariConfigOracle" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+        <property name="username" value="lyj"></property>
+        <property name="password" value="1234"></property>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="datasourceOracle" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfigOracle"/>
+    </bean>
+
+
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfigMaria"/>
+    </bean>
+
+
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+               <!-- classpath: /(resources가 루트가 됨) / ** (모든 경로가 있던지) / *.xml(  .xml 모든파일)-->
+        <property name="mapperLocations" value="classpath:/mappers/**/*.xml"></property>
+     </bean>
+
+    <mybatis:scan base-package="com.lyj.springdemo.mapper"/>
+
+</beans>
